@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DbHelper dbHelper = new DbHelper(MainActivity.this);
-                List<StudentModel> list = dbHelper.getAllStudents();
+                ArrayList<StudentModel> list = dbHelper.getAllStudents();
 
                 recyclerView.setHasFixedSize(true);
 

@@ -12,12 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.MyViewHolder> {
-    List<StudentModel> studentsList;
+    ArrayList<StudentModel> studentsList;
 
-    public myRecyclerViewAdapter(List<StudentModel> studentsList) {
+    public myRecyclerViewAdapter(ArrayList<StudentModel> studentsList) {
         this.studentsList=studentsList;
     }
 
@@ -42,6 +43,16 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
                 Toast.makeText(v.getContext(), "DELETED", Toast.LENGTH_SHORT).show();
                 DbHelper db =new DbHelper(v.getContext());
                 db.deleteRecordById(holder.data.getId());
+                int index=0;
+                for(int i=0;i<studentsList.size();i++)
+                {
+                    if(studentsList.get(i).getId()==holder.data.getId())
+                    {
+                        index=i;
+                    }
+                }
+                studentsList.remove(index);
+                notifyDataSetChanged();
 
             }
         });
