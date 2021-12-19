@@ -1,10 +1,13 @@
 package haqnawaz.org.sqlitedb20211216;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,28 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         holder.textViewAge.setText(""+holder.data.getAge());
         holder.textViewIsActive.setText(holder.data.isActive()==true?"True":"False");
         holder.textViewId.setText(""+holder.data.getId());
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "DELETED", Toast.LENGTH_SHORT).show();
+                DbHelper db =new DbHelper(v.getContext());
+                db.deleteRecordById(holder.data.getId());
+
+            }
+        });
+        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(v.getContext(), ""+holder.data.getId(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(v.getContext(),EditActivity.class);
+                intent.putExtra("Name",holder.data.getName());
+                intent.putExtra("Age",holder.data.getAge());
+                intent.putExtra("Id",holder.data.getId());
+                intent.putExtra("Active",holder.data.isActive());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -45,6 +70,8 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         TextView textViewAge;
         TextView textViewId;
         TextView textViewIsActive;
+        Button deleteBtn;
+        Button editBtn;
         StudentModel data;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,7 +79,8 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
             textViewAge = itemView.findViewById(R.id.age);
             textViewId = itemView.findViewById(R.id.ID);
             textViewIsActive = itemView.findViewById(R.id.isActive);
-
+            deleteBtn=itemView.findViewById(R.id.delete);
+            editBtn=itemView.findViewById(R.id.edit);
         }
     }
 }

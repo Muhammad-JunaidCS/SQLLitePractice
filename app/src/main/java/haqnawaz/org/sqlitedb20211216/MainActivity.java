@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -28,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonAdd = findViewById(R.id.buttonAdd);
+        buttonAdd = findViewById(R.id.buttonUpdate);
         buttonViewAll = findViewById(R.id.buttonViewAll);
-        editName = findViewById(R.id.editTextName);
-        editAge = findViewById(R.id.editTextAge);
-        switchIsActive = findViewById(R.id.switchStudent);
+        editName = findViewById(R.id.textName);
+        editAge = findViewById(R.id.textAge);
+        switchIsActive = findViewById(R.id.studentSwitch);
         recyclerView = findViewById(R.id.recyclerViewStudents);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -42,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     studentModel = new StudentModel(editName.getText().toString(), Integer.parseInt(editAge.getText().toString()), switchIsActive.isChecked());
-                    Toast.makeText(MainActivity.this, studentModel.toString(), Toast.LENGTH_SHORT).show();
+                    DbHelper dbHelper = new DbHelper(MainActivity.this);
+                    dbHelper.addStudent(studentModel);
+//                    Toast.makeText(MainActivity.this, studentModel.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "ADDED", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
                 }
-                DbHelper dbHelper = new DbHelper(MainActivity.this);
-                 dbHelper.addStudent(studentModel);
             }
         });
 

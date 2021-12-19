@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.session.PlaybackState;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -44,6 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         cv.put(STUDENT_NAME, STUDENTModel.getName());
         cv.put(STUDENT_AGE, STUDENTModel.getAge());
+        Log.i("active value", ""+STUDENTModel.isActive());
         cv.put(ACTIVE_STUDENT, STUDENTModel.isActive());
         db.insert(STUDENT_TABLE, null, cv);
         db.close();
@@ -75,5 +77,17 @@ public class DbHelper extends SQLiteOpenHelper {
 
         cursorCourses.close();
         return studentArrayList;
+    }
+    public void deleteRecordById(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteRow = "Delete from "+STUDENT_TABLE+" where "+STUDENT_ID+"='"+id+"'";
+        Log.i("query", deleteRow);
+        db.execSQL(deleteRow);
+    }
+    public void updateRecordById(int id,String name,int age,Boolean isActive){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String updateRow = "update "+STUDENT_TABLE+" set "+STUDENT_NAME+"='"+name+"',"+STUDENT_AGE+"='"+age+"',"+ACTIVE_STUDENT+"="+isActive+" where "+STUDENT_ID+"='"+id+"'";
+        Log.i("query", updateRow);
+        db.execSQL(updateRow);
     }
 }
